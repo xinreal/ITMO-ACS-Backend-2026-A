@@ -59,7 +59,16 @@ class UpdateProfileDto {
   about?: string;
 }
 
-
+function toPublicUser(user: User) {
+  return {
+    id: user.id,
+    email: user.email,
+    role: user.role,
+    status: user.status,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  };
+}
 
 @EntityController({
   baseRoute: '/users',
@@ -80,9 +89,9 @@ class UserController extends BaseController {
 
     const profile = await profileRepository.findOneBy({ userId: request.user.id });
 
-    return {
-      user: foundUser,
-      profile,
+   return {
+  user: toPublicUser(foundUser),
+  profile,
     };
   }
 
